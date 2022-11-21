@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  rancher:
+    image: rancher/rancher:stable
+    container_name: rancher
+    hostname: rancher
+    restart: unless-stopped
+    ports:
+      - '443:443'
+      - '80:80'
+    volumes:
+#      - rancher-vol:/var/lib/rancher
+      - /opt/rancher:/var/lib/rancher
+#    command: --no-cacerts
+#    networks:
+#     - rancher
+
+#volumes:
+#  rancher-vol:
+
+#networks:
+# rancher:
+#  driver: bridge
