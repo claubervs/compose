@@ -1,0 +1,29 @@
+---
+version: "2.1"
+services:
+  netbox:
+    image: lscr.io/linuxserver/netbox:latest
+    hostname: netbox
+    container_name: netbox
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+      - FILE__SUPERUSER_EMAIL=/home/clauber/creds/.email
+      - FILE__SUPERUSER_PASSWORD=/home/clauber/creds/.pass
+      - ALLOWED_HOST=netbox
+      - DB_NAME=netbox
+      - DB_USER=clauber
+      - FILE__DB_PASSWORD=/home/clauber/creds/.pass
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - FILE__REDIS_PASSWORD=/home/clauber/creds/.pass
+      - REDIS_DB_TASK=0
+      - REDIS_DB_CACHE=1
+    volumes:
+      - /mnt/persist/data/netbox:/config
+    ports:
+      - 8800:8000
+    restart: unless-stopped
