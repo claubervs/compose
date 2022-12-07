@@ -15,12 +15,12 @@ services:
 #      - /mnt/persist/data/rancher:/var/lib/rancher
        - /opt/rancher:/var/lib/rancher
 #    command: --no-cacerts
-    networks:
-     - rancher
+#    networks:
+#     - rancher
 
 #volumes:
 #  rancher-vol:
 
-networks:
-    rancher:
-        driver: bridge
+#networks:
+#    rancher:
+#        driver: bridge
