@@ -1,0 +1,37 @@
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        hosts /etc/coredns/NodeHosts {
+          ttl 60
+          reload 15s
+          fallthrough
+        }
+        prometheus :9153
+        forward . 10.10.10.5
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+    import /etc/coredns/custom/*.server
+  NodeHosts: |
+    172.19.0.4 k3d-GaleraCluster-agent-0
+    172.19.0.2 k3d-galeracluster-server-0
+    172.19.0.1 host.k3d.internal
+    172.19.0.2 k3d-GaleraCluster-server-0
+    172.19.0.5 k3d-GaleraCluster-serverlb
+    172.19.0.3 k3d-GaleraCluster-agent-1
+    172.19.0.3 k3d-galeracluster-agent-1
+    172.19.0.4 k3d-galeracluster-agent-0
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
