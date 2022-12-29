@@ -2,21 +2,34 @@
 version: "2.1"
 services:
   mariadb:
-    image: lscr.io/linuxserver/mariadb:latest
     container_name: mariadb
     hostname: mariadb
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - MYSQL_ROOT_PASSWORD=passwd
-      - TZ=America/Toronto
-    volumes:
-      - /mnt/persist/config/mariadb:/config
+    image: mariadb:latest
+    restart: unless-stopped
     ports:
       - 3306:3306
-    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=passwd
     networks:
       - ChiralNet
+
+
+  # mariadb:
+  #   image: lscr.io/linuxserver/mariadb:latest
+  #   container_name: mariadb
+  #   hostname: mariadb
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - MYSQL_ROOT_PASSWORD=passwd
+  #     - TZ=America/Toronto
+  #   volumes:
+  #     - /mnt/persist/config/mariadb:/config
+  #   ports:
+  #     - 3306:3306
+  #   restart: unless-stopped
+  #   networks:
+  #     - ChiralNet
   
   adminer:
     image: adminer
