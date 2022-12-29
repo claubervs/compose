@@ -15,4 +15,10 @@ services:
             - PGID=1000
             - TZ=America/Toronto
             - branch=v2-master
+        networks:
+          - ChiralNet
+
+networks:
+  ChiralNet:
+    external: true
 ...
