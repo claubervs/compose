@@ -9,7 +9,7 @@ services:
       - PUID=1000
       - PGID=1000
       - MYSQL_ROOT_PASSWORD=changeMe
-      - TZ=Americas/Toronto
+      - TZ=America/Toronto
     volumes:
       - /mnt/persist/config/mariadb:/config
     ports:
