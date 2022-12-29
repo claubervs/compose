@@ -9,9 +9,10 @@ services:
         ports:
             - 8580:80
         volumes:
-            - /mnt/persist/organizr/config:/config
+            - /mnt/persist/config/organizr/data:/config
         environment:
             - PUID=1000
             - PGID=1000
             - TZ=America/Toronto
+            - branch=v2-master
 ...
