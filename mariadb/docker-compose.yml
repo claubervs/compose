@@ -1,21 +1,14 @@
 ---
-version: "3"
-
-secrets:
-  default_password:
-    file: ../default_vault
-
+version: "2.1"
 services:
   mariadb:
-    secrets:
-      - default_password
     image: lscr.io/linuxserver/mariadb:latest
     container_name: mariadb
     hostname: mariadb
     environment:
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/default_password
+      - MYSQL_ROOT_PASSWORD=changeMe
       - TZ=Americas/Toronto
     volumes:
       - /mnt/persist/config/mariadb:/config
