@@ -16,4 +16,10 @@ services:
     cap_add:
       - IPC_LOCK
     restart: unless-stopped
+    networks:
+      - ChiralNet
+
+networks:
+  ChiralNet:
+    external: true
 ...

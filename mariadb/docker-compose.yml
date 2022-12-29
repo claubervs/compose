@@ -15,4 +15,10 @@ services:
     ports:
       - 3306:3306
     restart: unless-stopped
+    networks:
+      - ChiralNet
+
+networks:
+  ChiralNet:
+    external: true
 ...
