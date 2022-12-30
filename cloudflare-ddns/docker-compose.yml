@@ -1,0 +1,21 @@
+---
+version: '2'
+services:
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    hostname: cloudflare-ddns
+    image: oznu/cloudflare-ddns:latest
+    restart: unless-stopped
+    environment:
+      - API_KEY=change_me
+      - ZONE=claubersantos.com
+      # - SUBDOMAIN=subdomain
+      - PROXIED=true
+      - DNS_SERVER=10.10.10.5
+    networks:
+      - ChiralNet
+
+networks:
+  ChiralNet:
+    external: true
+...
