@@ -3,6 +3,8 @@ version: '3.4'
 
 services:
   postgresql:
+    container_name: postgresql_authentik
+    hostname: postgresql_authentik
     image: docker.io/library/postgres:12-alpine
     restart: unless-stopped
     healthcheck:
@@ -14,12 +16,14 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=${PG_PASS:?database password required}
-      - POSTGRES_USER=${PG_USER:-authentik}
-      - POSTGRES_DB=${PG_DB:-authentik}
-    env_file:
-      - .env
+      - POSTGRES_PASSWORD=change_me
+      - POSTGRES_USER=authentik
+      - POSTGRES_DB=authentik
+    networks:
+      - ChiralNet
   redis:
+    container_name: redis_authentik
+    hostname: redis_authentik
     image: docker.io/library/redis:alpine
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
@@ -31,34 +35,44 @@ services:
       timeout: 3s
     volumes:
       - redis:/data
+    networks:
+      - ChiralNet
   server:
+    container_name: authentik_server
+    hostname: authentik_server
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2022.12.0}
     restart: unless-stopped
     command: server
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
-      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: change_me
+      AUTHENTIK_SECRET_KEY: change_me
+      AUTHENTIK_ERROR_REPORTING__ENABLED: true
     volumes:
       - /mnt/persist/config/authentik/media:/media
       - /mnt/persist/config/authentik/custom-templates:/templates
-    env_file:
-      - .env
     ports:
-      - "0.0.0.0:${AUTHENTIK_PORT_HTTP:-9000}:9000"
-      - "0.0.0.0:${AUTHENTIK_PORT_HTTPS:-9443}:9443"
+      - 9000:9000
+      - 9443:9443
+    networks:
+      - ChiralNet
   worker:
+    container_name: authentik_worker
+    hostname: authentik_worker
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2022.12.0}
     restart: unless-stopped
     command: worker
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
-      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: change_me
+      AUTHENTIK_SECRET_KEY: change_me
+      AUTHENTIK_ERROR_REPORTING__ENABLED: true
     # `user: root` and the docker socket volume are optional.
     # See more for the docker socket integration here:
     # https://goauthentik.io/docs/outposts/integrations/docker
@@ -71,8 +85,12 @@ services:
       - /mnt/persist/config/authentik/media:/media
       - /mnt/persist/config/authentik/certs:/certs
       - /mnt/persist/config/authentik/custom-templates:/templates
-    env_file:
-      - .env
+    networks:
+      - ChiralNet
+
+networks:
+  ChiralNet:
+    external: true
 
 volumes:
   database:
