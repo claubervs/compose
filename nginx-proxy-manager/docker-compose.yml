@@ -22,10 +22,14 @@ services:
       # Uncomment this if IPv6 is not enabled on your host
       # DISABLE_IPV6: 'true'
     volumes:
-      - /mnt/persist/config/nginx-proxy-manager/data:/data
-      - /mnt/persist/config/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - nginx-proxy-manager-volume:/data
+      - nginx-proxy-manager-volume:/etc/letsencrypt
     networks:
       - ChiralNet
+
+volumes:
+  nginx-proxy-manager-volume:
+    external: true
 
 networks:
   ChiralNet:
