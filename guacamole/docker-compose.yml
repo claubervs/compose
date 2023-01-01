@@ -1,0 +1,26 @@
+---
+
+version: '3.3'
+services:
+  guacamole:
+    container_name: guacamole
+    hostname: guacamole
+    image: jwetzell/guacamole
+    ports:
+      - 7777:8080
+    volumes:
+      - guacamole:/config
+    networks:
+      - ChiralNet
+    # environment:
+      # - 'EXTENSIONS=auth-ldap,auth-openid,'
+
+volumes:
+  guacamole:
+    external: true
+
+networks:
+  ChiralNet:
+    external: true
+
+...
