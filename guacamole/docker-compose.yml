@@ -9,7 +9,7 @@ services:
     ports:
       - 7777:8080
     volumes:
-      - guacamole:/config
+      - postgres:/config
     networks:
       - ChiralNet
     # environment:
@@ -17,8 +17,8 @@ services:
     restart: unless-stopped
 
 volumes:
-  guacamole:
-    external: true
+  postgres:
+    driver: local
 
 networks:
   ChiralNet:
