@@ -18,6 +18,6 @@ volumes:
     external: true
 
 networks:
-  vaultwarden:
+  ChiralNet:
     external: true
 ...
