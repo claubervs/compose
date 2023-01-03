@@ -1,0 +1,23 @@
+---
+version: '3.3'
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    hostname: vaultwarden
+    ports:
+      - 8081:80
+    volumes:
+      - vaultwarden:/data
+    networks:
+      - ChiralNet
+    restart: unless-stopped
+
+volumes:
+  vaultwarden:
+    external: true
+
+networks:
+  vaultwarden:
+    external: true
+...
