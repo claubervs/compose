@@ -8,14 +8,10 @@ services:
     ports:
       - 8081:80
     volumes:
-      - vaultwarden:/data
+      - /home/clauber/docker/config/vaultwarden/data:/data
     networks:
       - ChiralNet
     restart: unless-stopped
-
-volumes:
-  vaultwarden:
-    external: true
 
 networks:
   ChiralNet:
