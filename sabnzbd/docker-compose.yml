@@ -1,16 +1,17 @@
 ---
-version: "2.1"
+version: '3.3'
 services:
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
+    image: sabnzbd/sabnzbd:latest
     container_name: sabnzbd
     hostname: sabnzbd
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Toronto
+      - HOST_WHITELIST_ENTRIES='docker.lan.claubersantos.com,sabnzbd.lan.claubersantos.com,sabnzbd.claubersantos.com,sabnzbd'
     volumes:
-      - sabnzbd-data:/config
+      - /mnt/persist/data/sabnzbd/config:/config
       - /mnt/media/usenet:/downloads #optional
       # - /path/to/incomplete/downloads:/incomplete-downloads #optional
     ports:
@@ -19,9 +20,35 @@ services:
     networks:
       - ChiralNet
 
-volumes:
-  sabnzbd-data:
+# volumes:
+#   sabnzbd-data:
+#     external: true
+
+networks:
+  ChiralNet:
     external: true
+...
+
+
+---
+version: '3.3'
+services:
+  sabnzbd:
+    image: sabnzbd/sabnzbd:latest
+    container_name: sabnzbd
+    hostname: sabnzbd.lan.claubersantos.com
+    environment:
+      - SABNZBD_UID=1000
+      - SABNZBD_GID=1000
+      - HOST_WHITELIST_ENTRIES="docker.lan.claubersantos.com, sabnzbd.lan.claubersantos.com, sabnzbd.claubersantos.com, sabnzbd"
+    volumes:
+      - /mnt/persist/data/sabnzbd/datadir:/datadir
+      - /mnt/media/usenet:/media
+    ports:
+      - 8085:8080
+    restart: unless-stopped
+    networks:
+      - ChiralNet
 
 networks:
   ChiralNet:
