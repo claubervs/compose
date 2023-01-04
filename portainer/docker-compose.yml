@@ -20,4 +20,4 @@ services:
 
 networks:
   ChiralNet:
-    driver: bridge
+    external: true
