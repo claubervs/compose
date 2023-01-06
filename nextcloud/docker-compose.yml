@@ -1,0 +1,46 @@
+version: "3"
+
+volumes:
+  data:
+  db:
+
+networks:
+  ChiralNet:
+    external: true
+  backend:
+    external: true
+
+services:
+  nextcloud:
+    image: nextcloud
+    container_name: nextcloud
+    hostname: nextcloud
+    restart: unless-stopped
+    volumes:
+      - data:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=changeme
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=nextcloud-db
+    networks:
+      - ChiralNet
+      - backend
+    depends_on:
+      - nextcloud-db
+
+  nextcloud-db:
+    image: mariadb
+    container_name: nextcloud-db
+    hostname: nextcloud-db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_PASSWORD=changeme
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    networks:
+      - backend

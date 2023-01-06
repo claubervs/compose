@@ -7,7 +7,8 @@ services:
     container_name: uptime-kuma
     hostname: uptime-kuma
     volumes:
-      - uptime-kuma:/app/data
+      - data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 3001:3001
     networks:
@@ -17,8 +18,8 @@ services:
       - no-new-privileges:true
 
 volumes:
-  uptime-kuma:
-    external: true
+  data:
+    driver: local
 
 networks:
   ChiralNet:
