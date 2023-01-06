@@ -1,0 +1,26 @@
+---
+version: '3.3'
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    volumes:
+      - uptime-kuma:/app/data
+    ports:
+      - 3001:3001
+    networks:
+      - ChiralNet
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  uptime-kuma:
+    external: true
+
+networks:
+  ChiralNet:
+    external: true
+...
