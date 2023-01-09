@@ -9,7 +9,8 @@ services:
     ports:
       - 8580:80
     volumes:
-      - /mnt/persist/config/organizr/data:/config
+      # - /mnt/persist/config/organizr/data:/config
+      - /docker/config/organizr/config:/config
     environment:
       - PUID=1000
       - PGID=1000

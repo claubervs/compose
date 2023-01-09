@@ -1,0 +1,23 @@
+---
+version: '3'
+services:
+    jellyseerr:
+      image: fallenbagel/jellyseerr:latest
+      container_name: jellyseerr
+      hostname: jellyseerr
+      environment:
+        - LOG_LEVEL=debug
+        - TZ=America/Toronto
+      ports:
+        - 5055:5055
+      volumes:
+        - /docker/jellyseerr/config:/app/config
+      restart: unless-stopped
+      networks:
+        - ChiralNet
+      labels:
+        - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  ChiralNet:
+    external: true

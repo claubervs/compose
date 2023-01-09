@@ -2,7 +2,7 @@
 version: '3.3'
 services:
   sabnzbd:
-    image: sabnzbd/sabnzbd:latest
+    image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     hostname: sabnzbd
     environment:
@@ -10,42 +10,16 @@ services:
       - PGID=1000
       - TZ=America/Toronto
       - HOST_WHITELIST_ENTRIES='docker.lan.claubersantos.com,sabnzbd.lan.claubersantos.com,sabnzbd.claubersantos.com,sabnzbd'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
     volumes:
-      - /mnt/persist/data/sabnzbd/config:/config
-      - /mnt/media/usenet:/downloads #optional
+      - /docker/sabnzbd/config:/config
+      - /mnt/media:/media
+      # - /mnt/media/usenet:/downloads #optional
+      # - /mnt/media/watched/usenet:/watched
       # - /path/to/incomplete/downloads:/incomplete-downloads #optional
     ports:
-      - 8082:8080
-    restart: unless-stopped
-    networks:
-      - ChiralNet
-
-# volumes:
-#   sabnzbd-data:
-#     external: true
-
-networks:
-  ChiralNet:
-    external: true
-...
-
-
----
-version: '3.3'
-services:
-  sabnzbd:
-    image: sabnzbd/sabnzbd:latest
-    container_name: sabnzbd
-    hostname: sabnzbd.lan.claubersantos.com
-    environment:
-      - SABNZBD_UID=1000
-      - SABNZBD_GID=1000
-      - HOST_WHITELIST_ENTRIES="docker.lan.claubersantos.com, sabnzbd.lan.claubersantos.com, sabnzbd.claubersantos.com, sabnzbd"
-    volumes:
-      - /mnt/persist/data/sabnzbd/datadir:/datadir
-      - /mnt/media/usenet:/media
-    ports:
-      - 8085:8080
+      - 8080:8080
     restart: unless-stopped
     networks:
       - ChiralNet
@@ -53,4 +27,3 @@ services:
 networks:
   ChiralNet:
     external: true
-...
