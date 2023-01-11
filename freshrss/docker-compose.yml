@@ -1,0 +1,25 @@
+---
+version: "2.1"
+services:
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    hostname: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    volumes:
+      - /docker/freshrss/config:/config
+      - /docker/freshrss/extensions:/config/www/freshrss/extensions
+    ports:
+      - 8780:80
+    restart: unless-stopped
+    networks:
+      - ChiralNet
+    labels:
+      - com.com.centurylinklabs.watchtower.enable=true
+
+networks:
+  ChiralNet:
+    external: true
